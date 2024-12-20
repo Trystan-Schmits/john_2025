@@ -11,6 +11,8 @@ permalink: /snake/
     .wrap{
         margin-left: auto;
         margin-right: auto;
+        width: 50%;
+        height: auto;
     }
 
     canvas{
@@ -399,7 +401,7 @@ permalink: /snake/
                     }
             }
             // Paint food
-            activeDot(food.x, food.y);
+            activeDot2(food.x, food.y,#a8383f);
             // Debug
             //document.getElementById("debug").innerHTML = snake_dir + " " + snake_next_dir + " " + snake[0].x + " " + snake[0].y;
             // Recursive call after speed delay, déjà vu
