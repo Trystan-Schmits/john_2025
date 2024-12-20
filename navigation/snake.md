@@ -356,6 +356,7 @@ permalink: /snake/
                 activeDot2(snake[snake.length-1].x,snake[snake.length-1].y,"#42f554"); //tail
             }else{
                 activeDot2(snake[0].x,snake[0].y,"#42f554"); //head
+                activeDot2(snake[snake.length-1].x,snake[snake.length-1].y,"#42f554"); //tail
             }
             
             for(let i = 1; i < snake.length-1; i++){
