@@ -316,41 +316,33 @@ permalink: /snake/
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             // Paint snake
             if(snake.length > 1){
-                    let deltaXFront = snake[1].x-snake[0-1].x;
-                    let deltaYFront = snake[1].y-snake[0-1].y;
+                    let deltaXFront = snake[1].x-snake[0].x;
+                    let deltaYFront = snake[1].y-snake[0].y;
 
 
                     if(deltaXFront==1 && deltaYFront==1){
                         activeDot3(snake[i].x, snake[i].y,snake_images.turn2);
-                        continue;
                     }
                     if(deltaXFront==1 && deltaYFront==-1){
                         activeDot3(snake[i].x, snake[i].y,snake_images.turn3);
-                        continue;
                     }
                      if(deltaXFront==-1 && deltaYFront==1){
                         activeDot3(snake[i].x, snake[i].y,snake_images.turn);
-                        continue;
                     }
                     if(deltaXFront==-1 && deltaYFront==-1){
                         activeDot3(snake[i].x, snake[i].y,snake_images.turn4);
-                        continue;
                     }
                     if(deltaXFront==1 && deltaYFront==1){
                         activeDot3(snake[i].x, snake[i].y,snake_images.turn4);
-                        continue;
                     }
                     if(deltaXFront==-1 && deltaYFront==1){
                         activeDot3(snake[i].x, snake[i].y,snake_images.turn3);
-                        continue;
                     }
                     if(deltaXFront==1 && deltaYFront==-1){
                         activeDot3(snake[i].x, snake[i].y,snake_images.turn);
-                        continue;
                     }
                     if(deltaXFront==-1 && deltaYFront==-1){
                         activeDot3(snake[i].x, snake[i].y,snake_images.turn2);
-                        continue;
                     }     
                 activeDot2(snake[0].x,snake[0].y,"#42f554"); //head
                 activeDot2(snake[snake.length-1].x,snake[snake.length-1].y,"#42f554"); //tail
@@ -397,6 +389,14 @@ permalink: /snake/
                         activeDot3(snake[i].x, snake[i].y,snake_images.turn2);
                         continue;
                     }      
+                    if (Math.abs(deltaXFront-deltaXBack) == 2){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.straight);
+                        continue;
+                    }
+                    if (Math.abs(deltaYFront-deltaYBack) == 2){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.straight2);
+                        continue;
+                    }
             }
             // Paint food
             activeDot(food.x, food.y);
