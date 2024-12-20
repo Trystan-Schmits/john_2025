@@ -277,11 +277,11 @@ permalink: /snake/
             snake.pop(); // tail is removed
             snake.unshift({x: _x, y: _y}); // head is new in new position/orientation
             if(snake_speed == 6){
-                snake[snake.length] = {x: snake[0].x, y: snake[0].y};
+                snake.push({x: _x, y: _y});
                 altScore(++score);
                 addFood();
                 activeDot(food.x, food.y);
-            }
+            } else{
             // Wall Checker
             if(wall === 1){
                 // Wall on, Game over test
@@ -322,6 +322,7 @@ permalink: /snake/
                 altScore(++score);
                 addFood();
                 activeDot(food.x, food.y);
+            }
             }
             // Repaint canvas
             ctx.beginPath();
