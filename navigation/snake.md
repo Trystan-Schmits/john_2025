@@ -122,6 +122,7 @@ permalink: /snake/
         // Canvas & Context
         const canvas = document.getElementById("snake");
         const ctx = canvas.getContext("2d");
+          ctx.imageSmoothingEnabled = false;
         //snake images
         const snake_images = {
             straight: new Image(10,10),
@@ -171,7 +172,7 @@ permalink: /snake/
         const button_setting_menu = document.getElementById("setting_menu");
         const button_setting_menu1 = document.getElementById("setting_menu1");
         // Game Control
-        const BLOCK = 10;   // size of block rendering
+        const BLOCK = 20;   // size of block rendering
         let SCREEN = SCREEN_MENU;
         let snake;
         let snake_dir;
@@ -324,35 +325,38 @@ permalink: /snake/
                     let deltaYFront = snake[1].y-snake[0].y;
 
 
-                    if(deltaXFront==1 && deltaYFront==1){
-                        activeDot3(snake[i].x, snake[i].y,snake_images.turn2);
+                    if(deltaXFront==1 && deltaYFront==0){
+                        activeDot3(snake[0].x, snake[0].y,snake_images.head);
                     }
-                    if(deltaXFront==1 && deltaYFront==-1){
-                        activeDot3(snake[i].x, snake[i].y,snake_images.turn3);
+                    if(deltaXFront==-1 && deltaYFront==0){
+                        activeDot3(snake[0].x, snake[0].y,snake_images.head3);
                     }
-                     if(deltaXFront==-1 && deltaYFront==1){
-                        activeDot3(snake[i].x, snake[i].y,snake_images.turn);
+                     if(deltaXFront==0 && deltaYFront==1){
+                        activeDot3(snake[0].x, snake[0].y,snake_images.head2);
                     }
-                    if(deltaXFront==-1 && deltaYFront==-1){
-                        activeDot3(snake[i].x, snake[i].y,snake_images.turn4);
+                    if(deltaXFront==0 && deltaYFront==-1){
+                        activeDot3(snake[0].x, snake[0].y,snake_images.head4);
+                    }  
+
+                    deltaXFront = snake[snake.length-2].x-snake[snake.length-1].x;
+                    deltaYFront = snake[snake.length-2].y-snake[snake.length-1].y;
+
+                    if(deltaXFront==1 && deltaYFront==0){
+                        activeDot3(snake[snake.length-1].x,snake[snake.length-1].y,snake_images.tail4);
                     }
-                    if(deltaXFront==1 && deltaYFront==1){
-                        activeDot3(snake[i].x, snake[i].y,snake_images.turn4);
+                    if(deltaXFront==-1 && deltaYFront==0){
+                        activeDot3(snake[snake.length-1].x,snake[snake.length-1].y,snake_images.tail2);
                     }
-                    if(deltaXFront==-1 && deltaYFront==1){
-                        activeDot3(snake[i].x, snake[i].y,snake_images.turn3);
+                     if(deltaXFront==0 && deltaYFront==1){
+                        activeDot3(snake[snake.length-1].x,snake[snake.length-1].y,snake_images.tail);
                     }
-                    if(deltaXFront==1 && deltaYFront==-1){
-                        activeDot3(snake[i].x, snake[i].y,snake_images.turn);
-                    }
-                    if(deltaXFront==-1 && deltaYFront==-1){
-                        activeDot3(snake[i].x, snake[i].y,snake_images.turn2);
-                    }     
-                activeDot2(snake[0].x,snake[0].y,"#42f554"); //head
-                activeDot2(snake[snake.length-1].x,snake[snake.length-1].y,"#42f554"); //tail
+                    if(deltaXFront==0 && deltaYFront==-1){
+                        activeDot3(snake[snake.length-1].x,snake[snake.length-1].y,snake_images.tail3);
+                    }  
+                //activeDot2(snake[0].x,snake[0].y,"#42f554"); //head
+                //activeDot2(snake[snake.length-1].x,snake[snake.length-1].y,"#42f554"); //tail
             }else{
                 activeDot2(snake[0].x,snake[0].y,"#42f554"); //head
-                activeDot2(snake[snake.length-1].x,snake[snake.length-1].y,"#42f554"); //tail
             }
             
             for(let i = 1; i < snake.length-1; i++){
@@ -421,7 +425,8 @@ permalink: /snake/
             altScore(score);
             // initial snake
             snake = [];
-            snake.push({x: 0, y: 15});
+            snake.push({x: 1, y: 10});
+            snake.push({x: 0, y: 10});
             snake_next_dir = 1;
             // food on canvas
             addFood();
