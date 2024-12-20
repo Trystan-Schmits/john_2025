@@ -94,11 +94,11 @@ permalink: /snake/
             <a id="new_game2" class="link-alert">new game</a>
             <br>
             <p>Speed:
-                <input id="speed1" type="radio" name="speed" value="120" checked/>
+                <input id="speed1" type="radio" name="speed" value="12" checked/>
                 <label for="speed1">Slow</label>
-                <input id="speed2" type="radio" name="speed" value="75"/>
+                <input id="speed2" type="radio" name="speed" value="24"/>
                 <label for="speed2">Normal</label>
-                <input id="speed3" type="radio" name="speed" value="35"/>
+                <input id="speed3" type="radio" name="speed" value="60"/>
                 <label for="speed3">Fast</label>
             </p>
             <p>Wall:
@@ -118,6 +118,13 @@ permalink: /snake/
         // Canvas & Context
         const canvas = document.getElementById("snake");
         const ctx = canvas.getContext("2d");
+        //snake images
+        const snake_images = {
+            straight: new Image(10,10),
+            turn: new Image(10,10),
+        }
+        snake_images.straight.src = "{{site.baseurl}}/images/snake/snakeStraight.png";
+        snake_images.turn.src = "{{site.baseurl}}/images/snake/snakeTurn.png";
         // HTML Game IDs
         const SCREEN_SNAKE = 0;
         const screen_snake = document.getElementById("snake");
@@ -145,6 +152,17 @@ permalink: /snake/
         let food = {x: 0, y: 0};
         let score;
         let wall;
+        let active = false;
+
+
+        const directionEnum = {
+            up: 0,
+            down: 1,
+            right: 2,
+            left: 3,
+        }
+        Object.freeze(directionEnum); //freeze the object to be unchangeable
+
         /* Display Control */
         /////////////////////////////////////////////////////////////
         // 0 for the game
@@ -184,7 +202,7 @@ permalink: /snake/
             button_setting_menu.onclick = function(){showScreen(SCREEN_SETTING);};
             button_setting_menu1.onclick = function(){showScreen(SCREEN_SETTING);};
             // speed
-            setSnakeSpeed(150);
+            setSnakeSpeed(12);
             for(let i = 0; i < speed_setting.length; i++){
                 speed_setting[i].addEventListener("click", function(){
                     for(let i = 0; i < speed_setting.length; i++){
@@ -232,6 +250,7 @@ permalink: /snake/
                 // Wall on, Game over test
                 if (snake[0].x < 0 || snake[0].x === canvas.width / BLOCK || snake[0].y < 0 || snake[0].y === canvas.height / BLOCK){
                     showScreen(SCREEN_GAME_OVER);
+                    active = false;
                     return;
                 }
             }else{
@@ -256,6 +275,7 @@ permalink: /snake/
                 // Game over test
                 if (snake[0].x === snake[i].x && snake[0].y === snake[i].y){
                     showScreen(SCREEN_GAME_OVER);
+                    active = false;
                     return;
                 }
             }
@@ -271,15 +291,62 @@ permalink: /snake/
             ctx.fillStyle = "royalblue";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             // Paint snake
-            for(let i = 0; i < snake.length; i++){
-                activeDot(snake[i].x, snake[i].y);
+            activeDot2(snake[0].x,snake[0].y,"#42f554");
+            for(let i = 1; i < snake.length; i++){
+                let color = "#4287f5"; 
+                if(i!=(snake.length-1)){  //if not the end of the snake
+                    let deltaXFront = snake[i].x-snake[i-1].x;
+                    let deltaXBack = snake[i].x-snake[i+1].x;
+                    let deltaYFront = snake[i].y-snake[i-1].y;
+                    let deltaYBack = snake[i].y-snake[i+1].y;
+
+                    if(deltaXFront==1 && deltaYFront-deltaYBack==1){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn); //rot = 90
+                        console.log("1");
+                        continue;
+                    }
+                    if(deltaXFront==1 && deltaYFront-deltaYBack==-1){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn); //rot = 90
+                        continue;
+                        console.log("2");
+                    }
+                     if(deltaXFront==-1 && deltaYFront-deltaYBack==1){
+                        console.log("3");
+                    }
+                    if(deltaXFront==-1 && deltaYFront-deltaYBack==-1){
+                        console.log("4");
+                    }
+                    if(deltaXFront-deltaXBack==1 && deltaYFront==1){
+                        console.log("5");
+                    }
+                    if(deltaXFront-deltaXBack==-1 && deltaYFront==1){
+                        console.log("6");
+                    }
+                    if(deltaXFront-deltaXBack==1 && deltaYFront==-1){
+                        console.log("7");
+                    }
+                    if(deltaXFront-deltaXBack==-1 && deltaYFront==-1){
+                        console.log("8");
+                    }
+                    
+                    
+
+                    if(deltaXFront-deltaXBack!=0 && deltaYFront-deltaYBack!=0){
+                        //console.log(deltaXFront-deltaXBack);
+                        color = "#f57542";
+                        activeDot2(snake[i].x, snake[i].y,color);
+                        continue;
+                    }          
+                }
+                activeDot2(snake[i].x, snake[i].y,color);
             }
             // Paint food
             activeDot(food.x, food.y);
             // Debug
             //document.getElementById("debug").innerHTML = snake_dir + " " + snake_next_dir + " " + snake[0].x + " " + snake[0].y;
             // Recursive call after speed delay, déjà vu
-            setTimeout(mainLoop, snake_speed);
+
+            setTimeout(function() {if(active==true){animId = requestAnimationFrame(mainLoop)};}, 1000 / snake_speed);
         }
         /* New Game setup */
         /////////////////////////////////////////////////////////////
@@ -298,28 +365,57 @@ permalink: /snake/
             addFood();
             // activate canvas event
             canvas.onkeydown = function(evt) {
-                changeDir(evt.keyCode);
+                evt.preventDefault();
+                let direction = 0;
+                switch(evt.key.toLowerCase()){
+                    case "w":
+                        direction = directionEnum.up;
+                        break;
+                    case "a":
+                        direction = directionEnum.left;
+                        break;
+                    case "s":
+                        direction = directionEnum.down;
+                        break;
+                    case "d":
+                        direction = directionEnum.right;
+                        break;
+                    case "arrowup":
+                        direction = directionEnum.up;
+                        break;
+                    case "arrowright":
+                        direction = directionEnum.right;
+                        break;
+                    case "arrowleft":
+                        direction = directionEnum.left;
+                        break;
+                    case "arrowdown":
+                        direction = directionEnum.down;
+                        break;
+                }
+                changeDir(direction);
             }
+            active = true;
             mainLoop();
         }
         /* Key Inputs and Actions */
         /////////////////////////////////////////////////////////////
-        let changeDir = function(key){
-            // test key and switch direction
-            switch(key) {
-                case 37:    // left arrow
+        let changeDir = function(direction){
+
+            switch(direction) {
+                case directionEnum.left:    // left
                     if (snake_dir !== 1)    // not right
                         snake_next_dir = 3; // then switch left
                     break;
-                case 38:    // up arrow
+                case  directionEnum.up:    // up
                     if (snake_dir !== 2)    // not down
                         snake_next_dir = 0; // then switch up
                     break;
-                case 39:    // right arrow
+                case  directionEnum.right: // right
                     if (snake_dir !== 3)    // not left
                         snake_next_dir = 1; // then switch right
                     break;
-                case 40:    // down arrow
+                case directionEnum.down: // down
                     if (snake_dir !== 0)    // not up
                         snake_next_dir = 2; // then switch down
                     break;
@@ -330,6 +426,15 @@ permalink: /snake/
         let activeDot = function(x, y){
             ctx.fillStyle = "#FFFFFF";
             ctx.fillRect(x * BLOCK, y * BLOCK, BLOCK, BLOCK);
+        }
+        function activeDot2(x,y,color){
+            ctx.fillStyle = color;
+            ctx.fillRect(x * BLOCK, y * BLOCK, BLOCK, BLOCK);
+        }
+        function activeDot3(x,y,image){
+            ctx.translate(x * BLOCK - Math.cos(rot)*BLOCK, y * BLOCK + Math.sin(rot)*BLOCK);
+            ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, BLOCK, BLOCK);
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
         }
         /* Random food placement */
         /////////////////////////////////////////////////////////////
