@@ -24,6 +24,7 @@ permalink: /snake/
         border-style: solid;
         border-width: 10px;
         border-color: #FFFFFF;
+        border-radius: 5%;
     }
     canvas:focus{
         outline: none;
