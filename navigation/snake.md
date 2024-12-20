@@ -6,6 +6,10 @@ permalink: /snake/
 
 <style>
 
+    container{
+        background: rgb(2,0,36);
+        background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(255,0,0,1) 69%, rgba(121,9,33,1) 83%);
+    }
     body{
     }
     .wrap{
@@ -314,7 +318,7 @@ permalink: /snake/
             }
             // Repaint canvas
             ctx.beginPath();
-            ctx.fillStyle = "royalblue";
+            ctx.fillStyle = "white";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             // Paint snake
             if(snake.length > 1){
