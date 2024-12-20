@@ -5,12 +5,9 @@ permalink: /snake/
 ---
 
 <style>
-
-    container{
-        background: rgb(2,0,36);
+    .page-content{
+         background: rgb(2,0,36);
         background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(255,0,0,1) 69%, rgba(121,9,33,1) 83%);
-    }
-    body{
     }
     .wrap{
         margin-left: auto;
@@ -406,7 +403,7 @@ permalink: /snake/
                     }
             }
             // Paint food
-            activeDot2(food.x, food.y,#a8383f);
+            activeDot2(food.x, food.y,"#a8383f");
             // Debug
             //document.getElementById("debug").innerHTML = snake_dir + " " + snake_next_dir + " " + snake[0].x + " " + snake[0].y;
             // Recursive call after speed delay, déjà vu
