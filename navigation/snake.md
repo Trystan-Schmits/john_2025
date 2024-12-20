@@ -121,10 +121,34 @@ permalink: /snake/
         //snake images
         const snake_images = {
             straight: new Image(10,10),
+            straight2: new Image(10,10),
             turn: new Image(10,10),
+            turn2: new Image(10,10),
+            turn3: new Image(10,10),
+            turn4: new Image(10,10),
+            tail: new Image(10,10),
+            tail2: new Image(10,10),
+            tail3: new Image(10,10),
+            tail4: new Image(10,10),
+            head: new Image(10,10),
+            head2: new Image(10,10),
+            head3: new Image(10,10),
+            head4: new Image(10,10),
         }
         snake_images.straight.src = "{{site.baseurl}}/images/snake/snakeStraight.png";
+        snake_images.straight2.src = "{{site.baseurl}}/images/snake/snakeStraight2.png";
         snake_images.turn.src = "{{site.baseurl}}/images/snake/snakeTurn.png";
+        snake_images.turn2.src = "{{site.baseurl}}/images/snake/snakeTurn2.png";
+        snake_images.turn3.src = "{{site.baseurl}}/images/snake/snakeTurn3.png";
+        snake_images.turn4.src = "{{site.baseurl}}/images/snake/snakeTurn4.png";
+        snake_images.tail.src = "{{site.baseurl}}/images/snake/snakeTail.png";
+        snake_images.tail2.src = "{{site.baseurl}}/images/snake/snakeTail2.png";
+        snake_images.tail3.src = "{{site.baseurl}}/images/snake/snakeTail3.png";
+        snake_images.tail4.src = "{{site.baseurl}}/images/snake/snakeTail4.png";
+        snake_images.head.src = "{{site.baseurl}}/images/snake/snakeHead.png";
+        snake_images.head2.src = "{{site.baseurl}}/images/snake/snakeHead2.png";
+        snake_images.head3.src = "{{site.baseurl}}/images/snake/snakeHead3.png";
+        snake_images.head4.src = "{{site.baseurl}}/images/snake/snakeHead4.png";
         // HTML Game IDs
         const SCREEN_SNAKE = 0;
         const screen_snake = document.getElementById("snake");
@@ -291,54 +315,87 @@ permalink: /snake/
             ctx.fillStyle = "royalblue";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             // Paint snake
-            activeDot2(snake[0].x,snake[0].y,"#42f554");
-            for(let i = 1; i < snake.length; i++){
-                let color = "#4287f5"; 
-                if(i!=(snake.length-1)){  //if not the end of the snake
+            if(snake.length > 1){
+                    let deltaXFront = snake[1].x-snake[0-1].x;
+                    let deltaYFront = snake[1].y-snake[0-1].y;
+
+
+                    if(deltaXFront==1 && deltaYFront==1){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn2);
+                        continue;
+                    }
+                    if(deltaXFront==1 && deltaYFront==-1){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn3);
+                        continue;
+                    }
+                     if(deltaXFront==-1 && deltaYFront==1){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn);
+                        continue;
+                    }
+                    if(deltaXFront==-1 && deltaYFront==-1){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn4);
+                        continue;
+                    }
+                    if(deltaXFront==1 && deltaYFront==1){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn4);
+                        continue;
+                    }
+                    if(deltaXFront==-1 && deltaYFront==1){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn3);
+                        continue;
+                    }
+                    if(deltaXFront==1 && deltaYFront==-1){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn);
+                        continue;
+                    }
+                    if(deltaXFront==-1 && deltaYFront==-1){
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn2);
+                        continue;
+                    }     
+                activeDot2(snake[0].x,snake[0].y,"#42f554"); //head
+                activeDot2(snake[snake.length-1].x,snake[snake.length-1].y,"#42f554"); //tail
+            }else{
+                activeDot2(snake[0].x,snake[0].y,"#42f554"); //head
+            }
+            
+            for(let i = 1; i < snake.length-1; i++){
                     let deltaXFront = snake[i].x-snake[i-1].x;
                     let deltaXBack = snake[i].x-snake[i+1].x;
                     let deltaYFront = snake[i].y-snake[i-1].y;
                     let deltaYBack = snake[i].y-snake[i+1].y;
 
                     if(deltaXFront==1 && deltaYFront-deltaYBack==1){
-                        activeDot3(snake[i].x, snake[i].y,snake_images.turn); //rot = 90
-                        console.log("1");
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn2);
                         continue;
                     }
                     if(deltaXFront==1 && deltaYFront-deltaYBack==-1){
-                        activeDot3(snake[i].x, snake[i].y,snake_images.turn); //rot = 90
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn3);
                         continue;
-                        console.log("2");
                     }
                      if(deltaXFront==-1 && deltaYFront-deltaYBack==1){
-                        console.log("3");
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn);
+                        continue;
                     }
                     if(deltaXFront==-1 && deltaYFront-deltaYBack==-1){
-                        console.log("4");
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn4);
+                        continue;
                     }
                     if(deltaXFront-deltaXBack==1 && deltaYFront==1){
-                        console.log("5");
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn4);
+                        continue;
                     }
                     if(deltaXFront-deltaXBack==-1 && deltaYFront==1){
-                        console.log("6");
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn3);
+                        continue;
                     }
                     if(deltaXFront-deltaXBack==1 && deltaYFront==-1){
-                        console.log("7");
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn);
+                        continue;
                     }
                     if(deltaXFront-deltaXBack==-1 && deltaYFront==-1){
-                        console.log("8");
-                    }
-                    
-                    
-
-                    if(deltaXFront-deltaXBack!=0 && deltaYFront-deltaYBack!=0){
-                        //console.log(deltaXFront-deltaXBack);
-                        color = "#f57542";
-                        activeDot2(snake[i].x, snake[i].y,color);
+                        activeDot3(snake[i].x, snake[i].y,snake_images.turn2);
                         continue;
-                    }          
-                }
-                activeDot2(snake[i].x, snake[i].y,color);
+                    }      
             }
             // Paint food
             activeDot(food.x, food.y);
@@ -432,9 +489,7 @@ permalink: /snake/
             ctx.fillRect(x * BLOCK, y * BLOCK, BLOCK, BLOCK);
         }
         function activeDot3(x,y,image){
-            ctx.translate(x * BLOCK - Math.cos(rot)*BLOCK, y * BLOCK + Math.sin(rot)*BLOCK);
-            ctx.drawImage(image, 0, 0, image.width, image.height, 0, 0, BLOCK, BLOCK);
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.drawImage(image, 0, 0, image.width, image.height, x*BLOCK, y*BLOCK, BLOCK, BLOCK);
         }
         /* Random food placement */
         /////////////////////////////////////////////////////////////
